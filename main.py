@@ -50,25 +50,28 @@ class Example(QWidget):
 
     def closeEvent(self, event):
         """При закрытии формы подчищаем за собой"""
-        # os.remove(self.map_file)
+        os.remove(self.map_file)
 
     def keyPressEvent(self, event):
         key = event.key()
         if key:
-            if key == Qt.Key.Key_Up:
-                self.ll[1] -= 0.0002
-            if key == Qt.Key.Key_left:
-                self.ll[0] += 0.0002
-            if key == Qt.Key.Key_Down:
-                self.ll[1] += 0.0002
-            if key == Qt.Key.Key_Right:
-                self.ll[0] -= 0.0002
-            print(key)
-            self.getImage()
-            self.pixmap = QPixmap(self.map_file)
-            self.image.setPixmap(self.pixmap)
-            self.repaint()
-            self.image.update()
+            try:
+                print(type(key), int(Qt.Key.Key_Down))
+                if key == int(Qt.Key.Key_Down):
+                    self.ll[1] -= 0.0002
+                # if key == Qt.Key.Key_left:
+                #     self.ll[0] += 0.0002
+                # if key == Qt.Key.Key_Up:
+                #     self.ll[1] += 0.0002
+                # if key == Qt.Key.Key_Right:
+                #     self.ll[0] -= 0.0002
+                self.getImage()
+                self.pixmap = QPixmap(self.map_file)
+                self.image.setPixmap(self.pixmap)
+                self.repaint()
+                self.image.update()
+            except Exception as e:
+                print(e)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
