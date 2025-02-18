@@ -2,6 +2,7 @@ import os
 import sys
 
 import requests
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel
 
@@ -11,16 +12,18 @@ SCREEN_SIZE = [600, 450]
 class Example(QWidget):
     def __init__(self):
         super().__init__()
+        self.ll = [37.530887, 55.703118]
         self.getImage()
         self.initUI()
 
     def getImage(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = 'f3a0fe3a-b07e-4840-a1da-06f18b2ddf13'
-        ll_spn = 'll=37.530887,55.703118&spn=0.002,0.002'
+        ll = f'll={str(self.ll[0])},{str(self.ll[1])}'
+        spn = 'spn=0.002,0.002'
         # Готовим запрос.
 
-        map_request = f"{server_address}{ll_spn}&apikey={api_key}"
+        map_request = f"{server_address}{ll}&{spn}&apikey={api_key}"
         response = requests.get(map_request)
 
         if not response:
@@ -47,8 +50,25 @@ class Example(QWidget):
 
     def closeEvent(self, event):
         """При закрытии формы подчищаем за собой"""
-        os.remove(self.map_file)
+        # os.remove(self.map_file)
 
+    def keyPressEvent(self, event):
+        key = event.key()
+        if key:
+            if key == Qt.Key.Key_Up:
+                self.ll[1] -= 0.0002
+            if key == Qt.Key.Key_left:
+                self.ll[0] += 0.0002
+            if key == Qt.Key.Key_Down:
+                self.ll[1] += 0.0002
+            if key == Qt.Key.Key_Right:
+                self.ll[0] -= 0.0002
+            print(key)
+            self.getImage()
+            self.pixmap = QPixmap(self.map_file)
+            self.image.setPixmap(self.pixmap)
+            self.repaint()
+            self.image.update()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
