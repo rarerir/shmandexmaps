@@ -14,8 +14,10 @@ class Example(QWidget):
         super().__init__()
         self.spn = 0.01
         self.ll = [37.530887, 55.703118]
+        self.theme = 'light'
         self.getImage()
         self.initUI()
+
 
     def getImage(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
@@ -23,7 +25,7 @@ class Example(QWidget):
         ll = f'll={str(self.ll[0])},{str(self.ll[1])}'
         spn = f'spn={self.spn},{self.spn}'
 
-        map_request = f"{server_address}{ll}&{spn}&apikey={api_key}"
+        map_request = f"{server_address}{ll}&{spn}&theme={self.theme}&apikey={api_key}"
         response = requests.get(map_request)
 
         if not response:
@@ -54,6 +56,11 @@ class Example(QWidget):
         if key:
             try:
                 print(type(key), int(Qt.Key.Key_Down))
+                if key == Qt.Key.Key_Tab:
+                    if self.theme == 'light':
+                        self.theme = 'dark'
+                    elif self.theme == 'dark':
+                        self.theme = 'light'
                 if key == Qt.Key.Key_PageUp:
                     self.spn += 0.01
                 if key == Qt.Key.Key_PageDown:
