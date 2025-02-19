@@ -22,10 +22,10 @@ class Example(QWidget):
     def getImage(self):
         server_address = 'https://static-maps.yandex.ru/v1?'
         api_key = 'f3a0fe3a-b07e-4840-a1da-06f18b2ddf13'
-        ll = f'll={str(self.ll[0])},{str(self.ll[1])}'
+        ll = f'{str(self.ll[0])},{str(self.ll[1])}'
         spn = f'spn={self.spn},{self.spn}'
 
-        map_request = f"{server_address}{ll}&{spn}&theme={self.theme}&apikey={api_key}"
+        map_request = f"{server_address}ll={ll}&{spn}&theme={self.theme}&pt={ll},pm2rdm&apikey={api_key}"
         response = requests.get(map_request)
 
         if not response:
