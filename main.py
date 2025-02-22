@@ -6,7 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton
 
-SCREEN_SIZE = [600, 450]
+SCREEN_SIZE = [600, 600]
 
 
 class Example(QWidget):
@@ -51,6 +51,7 @@ class Example(QWidget):
             l1, l2 = toponym_coodrinates.split()
             print(l1, l2)
             self.ll = [l1, l2]
+            ll = f'{str(self.ll[0])},{str(self.ll[1])}'
             print(self.ll)
 
         else:
@@ -70,6 +71,7 @@ class Example(QWidget):
         self.map_file = "map.png"
         with open(self.map_file, "wb") as file:
             file.write(response_map.content)
+            print(1111)
 
     def initUI(self):
         self.setGeometry(100, 100, *SCREEN_SIZE)
@@ -80,9 +82,9 @@ class Example(QWidget):
         self.image.resize(600, 450)
         self.image.setPixmap(self.pixmap)
         self.line = QLineEdit(self)
-        self.line.setGeometry(10, 10, 200, 20)
+        self.line.setGeometry(10, 500, 200, 20)
         self.btn_find = QPushButton('искать', self)
-        self.btn_find.setGeometry(50, 40, 100, 40)
+        self.btn_find.setGeometry(50, 540, 100, 40)
         self.btn_find.clicked.connect(self.findx)
 
     def findx(self):
@@ -90,8 +92,9 @@ class Example(QWidget):
         self.getImage()
         self.pixmap = QPixmap(self.map_file)
         self.image.setPixmap(self.pixmap)
-        self.repaint()
+
         self.image.update()
+        self.repaint()
 
     def closeEvent(self, event):
         """При закрытии формы подчищаем за собой"""
